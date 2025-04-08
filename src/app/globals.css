@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+    height: 100vh;
+}
+
 body {
     background-color: black;
     color: white;
