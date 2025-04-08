@@ -40,7 +40,6 @@ export default async function Home() {
         <h1 className="text-center font-bold text-xl mt-8 mb-5">
           What are you in the mood to play?
         </h1>
-
         <Link href={`/game/${plgdeck.id}`}>
           <section
             className="w-full bg-black rounded-lg"
@@ -66,14 +65,14 @@ export default async function Home() {
             </div>
           </section>
         </Link>
-
         <Input />
-        <h2 className="text-lg font-bold mt-8 mb-5">Games to discovery</h2>
+        <h2 className="text-lg font-bold mt-8 mb-5">Games to discover</h2>
         <section className="grid gap-7 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {gamesData.map((item) => (
             <GameDeck key={item.id} data={item} />
           ))}
         </section>
+        npm run
       </Container>
     </main>
   );
