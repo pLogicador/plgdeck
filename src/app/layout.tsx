@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "PlgDeck - Type. Explore. Add to your deck.",
   description:
-    "Check out detailed info, images, and gameplay insights for the games",
+    "PLGDeck is your go-to platform to find and explore the best games across all genres.",
   keywords: [
     "games",
     "steam",
@@ -24,8 +24,6 @@ export const metadata: Metadata = {
     "playstation",
     "microsoft",
     "plgdeck",
-    "plg",
-    "deck",
   ],
   openGraph: {
     images: [`${process.env.PROJECT_URL}/preview-plgdeck.png`],

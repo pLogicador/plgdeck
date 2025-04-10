@@ -4,6 +4,55 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Label } from "./components/label";
 import { GameDeck } from "@/components/GameDeck";
+import { Metadata } from "next";
+
+interface PropsParams {
+  params: {
+    id: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: PropsParams): Promise<Metadata> {
+  try {
+    const response: GameProps = await fetch(
+      `${process.env.NEXT_API_URL}/next-api/?api=game&id=${params.id}`,
+      { next: { revalidate: 60 } }
+    )
+      .then((res) => res.json())
+      .catch(() => {
+        return {
+          title:
+            "PlgDeck - Check out detailed info, images, and gameplay insights for the game",
+        };
+      });
+
+    return {
+      title: response.title,
+      description: `${response.description.slice(0, 100)}...`,
+      openGraph: {
+        title: response.title,
+        images: [response.image_url],
+      },
+      robots: {
+        index: true,
+        follow: true,
+        nocache: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          noimageindex: true,
+        },
+      },
+    };
+  } catch (err) {
+    return {
+      title:
+        "PlgDeck - Check out detailed info, images, and gameplay insights for the game",
+    };
+  }
+}
 
 async function getData(id: string) {
   try {
