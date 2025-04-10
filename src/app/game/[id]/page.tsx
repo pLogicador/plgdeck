@@ -2,11 +2,27 @@ import { Container } from "@/components/container";
 import { GameProps } from "@/utils/types/game";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { Label } from "./components/label";
+import { GameDeck } from "@/components/GameDeck";
 
 async function getData(id: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_API_URL}/next-api/?api=game&id=${id}`
+      `${process.env.NEXT_API_URL}/next-api/?api=game&id=${id}`,
+      { next: { revalidate: 60 } }
+    );
+    const data = response.json();
+    return data;
+  } catch (err) {
+    throw new Error("Failed to fetch data");
+  }
+}
+
+async function getGameSorted() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_API_URL}/next-api/?api=game_day`,
+      { cache: "no-store" }
     );
     const data = response.json();
     return data;
@@ -22,6 +38,7 @@ export default async function GameDetailId({
 }) {
   const { id } = params;
   const data: GameProps = await getData(id);
+  const sortedGame: GameProps = await getGameSorted();
 
   if (!data) redirect("/");
 
@@ -42,6 +59,32 @@ export default async function GameDetailId({
       <Container>
         <h2 className="font-bold text-xl my-4">{data.title}</h2>
         <p>{data.description}</p>
+
+        <h2 className="font-bold text-lg mt-7 mb-2">Categories</h2>
+        <div className="flex gap-2 flex-wrap">
+          {data.categories.map((item) => (
+            <Label name={item} key={item} />
+          ))}
+        </div>
+
+        <h2 className="font-bold text-lg mt-7 mb-2">Platforms</h2>
+        <div className="flex gap-2 flex-wrap">
+          {data.platforms.map((item) => (
+            <Label name={item} key={item} />
+          ))}
+        </div>
+
+        <p className="mt-7 mb-2">
+          <strong>Release date:</strong>
+          {data.release}
+        </p>
+
+        <h2 className="font-bold text-lg mt-7 mb-2">Recommended game:</h2>
+        <div className="flex">
+          <div className="flex-grow">
+            <GameDeck data={sortedGame} />
+          </div>
+        </div>
       </Container>
     </main>
   );
