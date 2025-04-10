@@ -1,6 +1,26 @@
 import { Container } from "@/components/container";
 import Image from "next/image";
 import { FaShareAlt } from "react-icons/fa";
+import { FavoriteDeck } from "./components/favorite";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Profile - Customize Your Gaming Space.",
+  description: "Create a unique profile with your name and favorite games.",
+  openGraph: {
+    images: [`${process.env.PROJECT_URL}/user-male.png`],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: true,
+    },
+  },
+};
 
 export default function Profile() {
   return (
@@ -27,6 +47,18 @@ export default function Profile() {
             <button className="bg-gray-900 px-4 py-3 rounded-lg">
               <FaShareAlt size={24} color="#fff" />
             </button>
+          </div>
+        </section>
+
+        <section className="flex flex-wrap gap-5 flex-col md:flex-row">
+          <div className="flex-grow flex-wrap">
+            <FavoriteDeck />
+          </div>
+          <div className="flex-grow flex-wrap">
+            <FavoriteDeck />
+          </div>
+          <div className="flex-grow flex-wrap">
+            <FavoriteDeck />
           </div>
         </section>
       </Container>
